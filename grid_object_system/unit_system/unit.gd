@@ -4,7 +4,7 @@ class_name Unit extends Grid_Object
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var path_follow_3d: PathFollow3D = $PathFollow3D
 
-@export var movement_speed:float = 1
+@export var seconds_per_cell:float = 1
 @export var movement_range:int = 3
 
 var _cells_moved_this_turn:int = 0:
@@ -31,7 +31,7 @@ func move_along_path(cells_path:Array[Vector3]) -> void:
 	_cells_moved_this_turn += (movement_array.size() - 1)
 	
 	for cell:Vector3 in cells_path:
-		curve.add_point(to_local(grid_resource.to_world(cell)))
+		curve.add_point(to_local(grid_resource.to_world_offset(cell)))
 	
 	_tween_movement()
 
@@ -39,12 +39,14 @@ func _tween_movement() -> void:
 	if movement_array.is_empty():
 		_finish_movement()
 		return
-
+	
+	var tween_speed:float = seconds_per_cell * movement_array.size() 
+	
 	var tween = create_tween()
 	tween.set_ease(Tween.EASE_OUT)
 	tween.set_trans(Tween.TRANS_QUART)
 	
-	tween.tween_property(path_follow_3d, "progress_ratio", 1, movement_speed)
+	tween.tween_property(path_follow_3d, "progress_ratio", 1, tween_speed)
 	
 	tween.tween_callback(_finish_movement)
 
@@ -62,7 +64,7 @@ func _set_selected(value:bool) -> void:
 func _reset_movement_path() -> void:
 	path_follow_3d.position = Vector3.ZERO
 	path_follow_3d.progress = 0
-	global_position = grid_resource.to_world(current_cell)	
+	global_position = grid_resource.to_world_offset(current_cell)	
 	curve.clear_points()
 	
 	

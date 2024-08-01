@@ -37,12 +37,16 @@ shadow_enabled = true
 [node name="Units" type="Node" parent="."]
 
 [node name="Unit" parent="Units" instance=ExtResource("3_s7mld")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.5, 0.5)
+seconds_per_cell = 2.0
 movement_range = 5
+current_cell = Vector3i(2, 0, 0)
 
 [node name="Unit2" parent="Units" instance=ExtResource("3_s7mld")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 2.5)
-movement_speed = 2.0
-current_cell = Vector3i(0, 0, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.5, 2.5)
+seconds_per_cell = 2.0
+movement_range = 5
+current_cell = Vector3i(2, 0, 2)
 
 [node name="Overlays" type="Node" parent="."]
 

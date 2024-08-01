@@ -139,15 +139,15 @@ _data = {
 }
 
 [node name="Unit" type="Path3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 0.5)
 script = ExtResource("1_glguj")
+seconds_per_cell = null
 
 [node name="PathFollow3D" type="PathFollow3D" parent="."]
 rotation_mode = 2
 loop = false
 
 [node name="Skin" type="MeshInstance3D" parent="PathFollow3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 mesh = SubResource("BoxMesh_7pht5")
 skeleton = NodePath("../..")
 

@@ -9,11 +9,10 @@ shading_mode = 0
 material = SubResource("StandardMaterial3D_v0y1v")
 top_radius = 0.3
 bottom_radius = 0.1
-height = 0.5
+height = 1.0
 
 [node name="Cursor" type="Node3D"]
 script = ExtResource("1_e1vmn")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 mesh = SubResource("CylinderMesh_13ftm")

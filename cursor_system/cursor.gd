@@ -7,10 +7,9 @@ signal cursor_interacted(at_cell)
 @onready var mesh_instance_3d: MeshInstance3D = $MeshInstance3D
 
 @export var grid_resource:Grid_Resource = preload("res://grid_system/grid_resource.tres")
-@export var current_cell:Vector3i
+@export var current_cell:Vector3
 
 var _over_valid_cell:bool = false
-
 
 func _unhandled_input(event: InputEvent) -> void:
 	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
@@ -52,5 +51,9 @@ func _cast_ray_to_ground() -> void:
 	mesh_instance_3d.show()
 	_over_valid_cell = true
 	current_cell = grid_resource.to_grid(Vector3(result['position'].x, 0, result['position'].z))
-	global_position = grid_resource.to_world(current_cell)
+	global_position = grid_resource.to_world_offset(current_cell)
+	
+	if grid_resource.grid_cells.has(current_cell):
+		print(grid_resource.grid_cells[current_cell].cell_ground_offset)
+	
 	cursor_moved.emit(current_cell)

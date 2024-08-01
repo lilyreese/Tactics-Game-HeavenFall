@@ -7,8 +7,12 @@ class_name Game_Board extends Node3D
 @export var grid_resource:Grid_Resource = preload("res://grid_system/grid_resource.tres")
 @export var terrain_grid:Terrain_Grid
 
+var board_cells_dictionary:Dictionary = {} # {Cell Coordinate:Cell}
+
 var terrain_array:PackedVector3Array
 var units_dictionary:Dictionary = {} # {(Cell Coordinate):Unit}
+
+
 
 var selected_unit:Unit
 
@@ -17,12 +21,14 @@ var cell_parenthood:Dictionary = {}
 var cells_in_range:PackedVector3Array = []
 
 func _ready() -> void:
-	_update_terrain_array()	
-	_update_units_dictionary()
-	
 	cursor.cursor_interacted.connect(_on_cursor_interacted)
 	cursor.cursor_moved.connect(_on_cursor_moved)
 
+	_update_terrain_array()	
+	_update_units_dictionary()
+	
+	
+	
 func _on_cursor_interacted(at_cell:Vector3i) -> void:
 	_update_units_dictionary()
 	
@@ -64,6 +70,13 @@ func _update_terrain_array() -> void:
 	if terrain_grid:
 		terrain_array = terrain_grid.get_used_cells()	
 		
+	await get_tree().create_timer(0.1).timeout
+	for cell in terrain_array:
+		board_cells_dictionary[cell] = Grid_Cell.new(cell, self)
+		
+	grid_resource.grid_cells = board_cells_dictionary.duplicate()
+	print(grid_resource.grid_cells[Vector3(0,0,0)])
+	
 func _update_units_dictionary() -> void:
 	units_dictionary.clear()
 	for child in units.get_children():
@@ -74,8 +87,8 @@ func _update_units_dictionary() -> void:
 		
 		var unit:Unit = child as Unit
 		
-		units_dictionary[unit.current_cell] = unit
-
+		units_dictionary[unit.current_cell] = unit	
+	
 func _get_cells_in_range(start_cell:Vector3i, max_range:int, include_starting_cell:bool = true) -> PackedVector3Array:
 	const DIRECTIONS = [Vector3i.LEFT, Vector3i.RIGHT, Vector3i.FORWARD, Vector3i.BACK]
 	

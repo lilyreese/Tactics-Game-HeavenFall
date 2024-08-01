@@ -6,6 +6,7 @@ class_name Camera_Gimball extends Node3D
 @onready var horizontal_gimball: Marker3D = $GridPosition/HorizontalGimball
 @onready var vertical_gimball: Marker3D = $GridPosition/HorizontalGimball/VerticalGimball
 @onready var camera: Camera3D = $GridPosition/HorizontalGimball/VerticalGimball/Camera
+@onready var target_visual: MeshInstance3D = $Target_Visual
 
 @export_range(0.001, 0.1) var mouse_sensitivity:float = 0.001
 
@@ -63,16 +64,18 @@ func _process(delta: float) -> void:
 	
 	var movement_vector:Vector3 = horizontal_gimball.basis * (Vector3(movement_input.x, 0, movement_input.y))
 	position += movement_vector * delta * movement_speed
+	target_visual.position = position
+	target_visual.position.y = grid_resource.to_world_offset(_current_cell).y
 	
-	_current_cell = grid_resource.to_grid(global_position)
+	_current_cell = grid_resource.to_grid(Vector3(global_position.x, 0, global_position.z))
 	
 	var tween = create_tween().set_parallel(true)
 	tween.set_ease(Tween.EASE_OUT_IN)
 	tween.set_trans(Tween.TRANS_LINEAR)
 	if movement_input == Vector2.ZERO or grid_resource.to_grid(grid_position.global_position) == _current_cell:
-		tween.chain().tween_property(grid_position, "position", grid_resource.to_world(_current_cell), 0.5)
+		tween.chain().tween_property(grid_position, "position", grid_resource.to_world_offset(_current_cell), 0.5)
 	else:
-		tween.chain().tween_property(grid_position, "position", Vector3(position.x, grid_resource.to_world(_current_cell).y,position.z), 0.5)
+		tween.chain().tween_property(grid_position, "position", Vector3(position.x, grid_resource.to_world_offset(_current_cell).y,position.z), 0.5)
 	
 func _set_current_cell(value:Vector3) -> void:
 	_current_cell = value
