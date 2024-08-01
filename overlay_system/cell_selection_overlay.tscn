@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://ddlonfkih43bs"]
+
+[ext_resource type="Script" path="res://overlay_system/cell_selection_overlay.gd" id="1_gur0c"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ndjig"]
+transparency = 1
+albedo_color = Color(1, 1, 0, 0.545098)
+
+[sub_resource type="TorusMesh" id="TorusMesh_i032b"]
+material = SubResource("StandardMaterial3D_ndjig")
+
+[sub_resource type="MeshLibrary" id="MeshLibrary_s1e6x"]
+item/0/name = ""
+item/0/mesh = SubResource("TorusMesh_i032b")
+item/0/mesh_transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+item/0/shapes = []
+item/0/navigation_mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/0/navigation_layers = 1
+
+[node name="CellSelectionOverlay" type="GridMap"]
+mesh_library = SubResource("MeshLibrary_s1e6x")
+cell_size = Vector3(1, 1, 1)
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_gur0c")

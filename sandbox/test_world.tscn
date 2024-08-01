@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://ba0baflqxlfm6"]
+
+[ext_resource type="MeshLibrary" uid="uid://c16qh7d6spvnj" path="res://sandbox/mesh_library/test_mesh_library.tres" id="1_locm3"]
+[ext_resource type="Script" path="res://sandbox/grid_map.gd" id="2_pwy6w"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_j4unr"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_vfp8i"]
+sky_material = SubResource("ProceduralSkyMaterial_j4unr")
+
+[sub_resource type="Environment" id="Environment_xlmvu"]
+background_mode = 2
+sky = SubResource("Sky_vfp8i")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="TestWorld" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_xlmvu")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="GridMap" type="GridMap" parent="."]
+mesh_library = ExtResource("1_locm3")
+cell_size = Vector3(2, 0.1, 2)
+script = ExtResource("2_pwy6w")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.760893, 0.648877, 0, -0.648877, 0.760893, 0, 12.1184, 11.4858)

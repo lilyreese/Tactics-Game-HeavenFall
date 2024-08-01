@@ -1,0 +1,71 @@
+[gd_scene load_steps=12 format=3 uid="uid://jv571lqet1tn"]
+
+[ext_resource type="Script" path="res://board_system/game_board.gd" id="1_hflnd"]
+[ext_resource type="PackedScene" uid="uid://btx86yisvgd5t" path="res://grid_system/terrain_grid.tscn" id="2_8sd7b"]
+[ext_resource type="PackedScene" uid="uid://cxh8s2cdew8mp" path="res://grid_object_system/unit_system/unit.tscn" id="3_s7mld"]
+[ext_resource type="PackedScene" uid="uid://djh0qauvocuvd" path="res://cursor_system/cursor.tscn" id="4_032o4"]
+[ext_resource type="MeshLibrary" uid="uid://ipir7ydjivs8" path="res://kenney_mini-arena/Scenes/Libraries/kenney_terrain.tres" id="5_g42tt"]
+[ext_resource type="PackedScene" uid="uid://ddlonfkih43bs" path="res://overlay_system/cell_selection_overlay.tscn" id="5_trtlc"]
+[ext_resource type="PackedScene" uid="uid://cmpqklo3mltk4" path="res://camera_system/camera_gimball.tscn" id="6_iod5o"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_xi045"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_hrmlv"]
+sky_material = SubResource("ProceduralSkyMaterial_xi045")
+
+[sub_resource type="Environment" id="Environment_hqtb5"]
+background_mode = 2
+sky = SubResource("Sky_hrmlv")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_dcnty"]
+
+[node name="GameBoard" type="Node3D" node_paths=PackedStringArray("terrain_grid")]
+script = ExtResource("1_hflnd")
+terrain_grid = NodePath("Terrain/TerrainGrid")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_hqtb5")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Units" type="Node" parent="."]
+
+[node name="Unit" parent="Units" instance=ExtResource("3_s7mld")]
+movement_range = 5
+
+[node name="Unit2" parent="Units" instance=ExtResource("3_s7mld")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.5, 2.5)
+movement_speed = 2.0
+current_cell = Vector3i(0, 0, 2)
+
+[node name="Overlays" type="Node" parent="."]
+
+[node name="CellSelectionOverlay" parent="Overlays" instance=ExtResource("5_trtlc")]
+metadata/_editor_floor_ = Vector3(0, 0, 0)
+
+[node name="Terrain" type="Node" parent="."]
+
+[node name="TerrainGrid" parent="Terrain" instance=ExtResource("2_8sd7b")]
+mesh_library = ExtResource("5_g42tt")
+physics_material = SubResource("PhysicsMaterial_dcnty")
+data = {
+"cells": PackedInt32Array(0, 0, 4, 0, 1, 4, 1, 1, 4, 1, 2, 4, 2, 2, 3, 2, 3, 3, 3, 3, 4, 3, 4, 4, 3, 5, 4, 4, 5, 4, 4, 6, 3, 5, 6, 4, 5, 7, 4, 1, 0, 4, 2, 0, 4, 3, 0, 4, 4, 0, 4, 5, 0, 3, 6, 0, 1441799, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 0, 0, 10, 1, 0, 9, 1, 0, 9, 2, 0, 8, 1, 0, 7, 1, 0, 6, 1, 1441799, 5, 1, 4, 4, 1, 4, 3, 1, 4, 2, 1, 4, 3, 2, 4, 4, 2, 4, 5, 2, 4, 6, 2, 1441799, 7, 2, 0, 8, 2, 0, 10, 2, 0, 10, 3, 0, 9, 3, 0, 9, 4, 7, 8, 4, 7, 7, 4, 7, 8, 3, 0, 7, 3, 0, 6, 3, 1441799, 5, 3, 4, 4, 3, 4, 4, 4, 4, 2, 4, 4, 5, 4, 4, 6, 4, 1441798, 1, 3, 4, 0, 2, 4, 0, 3, 4, 0, 4, 4, 1, 4, 4, 2, 5, 4, 1, 5, 4, 0, 6, 3, 0, 5, 4, 1, 6, 4, 2, 6, 4, 3, 6, 4, 5, 5, 4, 6, 5, 4, 7, 5, 4, 8, 5, 4, 9, 5, 4, 10, 4, 7, 11, 4, 7, 10, 5, 4, 10, 6, 4, 9, 6, 4, 9, 7, 4, 8, 6, 4, 8, 7, 4, 7, 6, 4, 6, 6, 4, 6, 7, 4, 7, 7, 4, 10, 7, 3, 4, 7, 4, 11, 7, 4, 11, 6, 4, 11, 5, 3, 11, 3, 0, 11, 2, 0, 11, 1, 0, 11, 0, 0, 12, 3, 0, 12, 2, 0, 12, 1, 0, 12, 0, 0, 13, 0, 0, 14, 0, 0, 15, 0, 0, 16, 0, 0, 16, 1, 0, 16, 2, 0, 15, 2, 0, 14, 3, 0, 13, 3, 0, 13, 2, 0, 13, 1, 0, 14, 1, 0, 15, 1, 0, 14, 2, 0, 16, 3, 0, 15, 3, 0, 15, 4, 0, 15, 5, 0, 15, 6, 0, 15, 7, 0, 14, 7, 0, 14, 6, 0, 14, 5, 0, 16, 4, 0, 16, 5, 0, 16, 6, 0, 16, 7, 0, 14, 4, 0, 13, 4, 1441797, 12, 4, 7, 13, 5, 1441799, 13, 6, 1441799, 13, 7, 1441799, 12, 5, 1441796, 12, 6, 1441796, 12, 7, 1441796, 0, 7, 655367, 1, 7, 655367, 2, 7, 4, 3, 7, 4, 16, 8, 0, 16, 9, 0, 16, 10, 0, 15, 9, 0, 15, 8, 0, 14, 8, 0, 14, 9, 0, 15, 10, 0, 14, 10, 0, 14, 11, 0, 15, 11, 0, 16, 11, 0, 13, 11, 0, 12, 11, 0, 11, 11, 0, 0, 10, 0, 1, 10, 0, 2, 11, 0, 3, 11, 0, 4, 11, 0, 5, 11, 0, 5, 12, 0, 6, 12, 0, 6, 11, 0, 7, 12, 0, 8, 12, 0, 9, 12, 0, 9, 11, 0, 10, 11, 0, 8, 11, 0, 7, 11, 0, 4, 10, 0, 3, 10, 0, 2, 10, 0, 12, 10, 0, 13, 10, 0, 11, 10, 0, 10, 10, 0, 9, 10, 0, 8, 10, 0, 7, 10, 0, 6, 10, 0, 5, 10, 0, 16, 12, 0, 15, 12, 0, 14, 12, 0, 13, 12, 0, 12, 12, 0, 11, 12, 0, 10, 12, 0, 4, 12, 0, 3, 12, 0, 2, 12, 0, 1, 12, 0, 1, 11, 0, 0, 11, 0, 0, 12, 0, 0, 9, 0, 1, 9, 0, 1, 8, 0, 0, 8, 0, 65535, 3, 4, 65535, 4, 4, 65535, 5, 4, 65535, 6, 4, 65535, 2, 4, 65535, 1, 4, 65535, 0, 4, 65535, 7, 4)
+}
+metadata/_editor_floor_ = Vector3(0, 1, 0)
+
+[node name="Player" type="Node" parent="."]
+
+[node name="Cursor" parent="Player" instance=ExtResource("4_032o4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.30445, 0)
+
+[node name="CameraGimball" parent="Player" instance=ExtResource("6_iod5o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.00736, 1.00962, 1.98339)
+mouse_sensitivity = 0.005
+max_zoom = 10.0
+zoom_speed = 0.297

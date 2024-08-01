@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://btx86yisvgd5t"]
+
+[ext_resource type="MeshLibrary" uid="uid://cq73wijo0fr0m" path="res://grid_system/grid_mesh/test_library.tres" id="1_20xep"]
+[ext_resource type="Script" path="res://grid_system/terrain_grid.gd" id="1_yc1wp"]
+
+[node name="TerrainGrid" type="GridMap"]
+mesh_library = ExtResource("1_20xep")
+cell_size = Vector3(1, 1, 1)
+collision_layer = 256
+collision_mask = 0
+script = ExtResource("1_yc1wp")
+metadata/_editor_floor_ = Vector3(0, 0, 0)
